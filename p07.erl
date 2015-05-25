@@ -1,18 +1,13 @@
 -module(p07).
--export([flatten/1, do_crap/1]).
+-export([flatten/1]).
+-import(p05, [reverse/1]).
 
-%flatten(L) ->
-%    L.
+flatten(L) ->
+    flatten(L, []).
 
-flatten([[_|_] = IL|T]) ->
-    [flatten(IL)|T].
-%flatten() ->
-
-
-do_crap(L) ->
-    do_crap(L, []).
-
-do_crap([H|T], A) ->
-    do_crap(T, [H|A]);
-do_crap([], A) ->
-    A.
+flatten([[_|_] = H|T], A) ->
+    flatten(H ++ T, A);
+flatten([H|T], A) ->
+    flatten(T, [H|A]);
+flatten([], A) ->
+    reverse(A).
