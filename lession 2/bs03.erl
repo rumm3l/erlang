@@ -17,7 +17,7 @@ split(PatternSize, BinPattern, BinString, WordAcc, WordsAcc) ->
     case BinString of
         <<BinPattern:PatternSize/binary, Rest/binary>> ->
             if
-                WordAcc == <<>> ->
+                WordAcc == <<>> -> %% case for repeated delimiters
                     split(PatternSize, BinPattern, Rest, <<>>, WordsAcc);
                 true ->
                     split(PatternSize, BinPattern, Rest, <<>>, [WordAcc|WordsAcc])
