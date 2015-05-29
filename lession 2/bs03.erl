@@ -16,18 +16,7 @@ split(_, _, <<>>, WordAcc, WordsAcc) ->
 split(PatternSize, BinPattern, BinString, WordAcc, WordsAcc) ->
     case BinString of
         <<BinPattern:PatternSize/binary, Rest/binary>> ->
-            if
-                WordAcc == <<>> -> %% case for repeated delimiters
-                    split(PatternSize, BinPattern, Rest, <<>>, WordsAcc);
-                true ->
-                    split(PatternSize, BinPattern, Rest, <<>>, [WordAcc|WordsAcc])
-            end;
+            split(PatternSize, BinPattern, Rest, <<>>, [WordAcc|WordsAcc]);
         <<Char, Rest/binary>> ->
             split(PatternSize, BinPattern, Rest, <<WordAcc/binary, Char>>, WordsAcc)
     end.
-
-%% WTF???
-%split(PatternSize, BinPattern, <<BinPattern:PatternSize/binary, BinString/binary>>, WordAcc, WordsAcc) ->
-%    split(PatternSize, BinPattern, BinString, <<>>, [WordAcc|WordsAcc]);
-%split(PatternSize, BinPattern, <<Char, BinString/binary>>, WordAcc, WordsAcc) ->
-%    split(PatternSize, BinPattern, BinString, <<WordAcc/binary, Char>>, WordsAcc).
