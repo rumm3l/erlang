@@ -6,6 +6,7 @@
 -export([delete/2]).
 -export([clean/1]).
 -export([lookup/2]).
+-export([lookup/3]).
 -export([lookup_by_date/3]).
 -export([get_ts/0]).
 -export([dt_2_ts/1]).
@@ -46,6 +47,20 @@ lookup(Table, Key) ->
     _ ->
       undefined
   end.
+
+lookup(Table, Key, TTL) ->
+  CTS = get_ts(),
+  case ets:lookup(Table, Key) of
+    [#entry{timestamp = ETS, key = Key}] when CTS > ETS + TTL ->
+      delete(Table, Key), % remove stale
+      undefined;
+    [#entry{value = Value, key = Key}] ->
+      insert(Table, Key, Value, CTS), % prolong TTL
+      Value;
+    _ ->
+      undefined
+  end.
+
 
 lookup_by_date(Table, FromTimestamp, ToTimestamp) ->
   Key = ets:first(Table),
