@@ -48,7 +48,6 @@ lookup(Table, Key, TTL) ->
   CTS = get_ts(),
   case ets:lookup(Table, Key) of
     [#entry{timestamp = ETS, key = Key}] when CTS > ETS + TTL ->
-      io:format("Remove stale~n"),
       delete(Table, Key), % remove stale
       undefined;
     [#entry{value = Value, key = Key} = Entry] ->

@@ -8,20 +8,20 @@
 
 
 handle_call({lookup, Key}, State = #server_state{table = Table, ttl = TTL}) ->
-  CurrTimestamp = cache_api:get_ts(),
-  case cache_api:lookup(Table, Key) of
-    undefined ->
-      {ok, {ok, undefined}, State};
-    {_, Key, _, Timestamp} when CurrTimestamp > Timestamp + TTL ->
-      cache_api:delete(Table, Key),
-      {ok, {ok, undefined}, State};
-    {_, Key, Value, _} ->
-      cache_api:insert(Table, Key, Value), % prolong TTL
-      {ok, {ok, Value}, State}
-  end;
-handle_call(Msg, State) ->
-  io:format("Got call message ~p~n", [Msg]),
-  {ok, ok, State}.
+  Result = case cache_api:lookup(Table, Key, TTL) of
+             #entry{value = Value} ->
+               {Key, Value};
+             _ ->
+               undefined
+           end,
+  {ok, {ok, Result}, State};
+handle_call({lookup_by_date, DateFrom, DateTo}, State = #server_state{table = Table, ttl = TTL}) ->
+  TsFrom = cache_api:dt_2_ts(DateFrom),
+  TsTo = cache_api:dt_2_ts(DateTo),
+  Entries = cache_api:lookup_by_date(Table, TsFrom, TsTo, TTL),
+  Result = lists:map(fun({_, K, V, _}) -> {K, V} end, Entries),
+  {ok, {ok, Result}, State}.
+
 
 handle_cast({insert, Key, Value}, #server_state{table = Table} = State) ->
   cache_api:insert(Table, Key, Value),
