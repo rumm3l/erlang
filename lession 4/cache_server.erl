@@ -9,7 +9,7 @@
 
 -define(SERVER_NAME, cache_server).
 
--record(server_state, {ttl, table}).
+-include("cache_server.hrl").
 
 start_link([{ttl, TTL}]) ->
   case whereis(?SERVER_NAME) of
@@ -77,7 +77,7 @@ server_loop(State) ->
       {ok, NewState} = cache_server_handler:handle_cast(Msg, State),
       server_loop(NewState);
     {call, From, Msg} ->
-      {ok, Result,NewState} = cache_server_handler:handle_call(Msg, State),
+      {ok, Result, NewState} = cache_server_handler:handle_call(Msg, State),
       From ! {result, Result},
       server_loop(NewState);
     Msg ->
