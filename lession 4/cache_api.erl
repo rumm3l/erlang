@@ -49,13 +49,11 @@ lookup(Table, Key, TTL, Prolong) ->
   case ets:lookup(Table, Key) of
     [#entry{timestamp = ETS, key = Key}] when CTS > ETS + TTL ->
       delete(Table, Key), % remove stale
-      io:format("found old~n"),
       undefined;
     [#entry{value = Value, key = Key} = Entry] ->
       if Prolong == true -> insert(Table, Key, Value, CTS);
          true -> void
       end,
-      io:format("found valid~n"),
       Entry;
     _ ->
       undefined
@@ -66,7 +64,6 @@ lookup_by_date(Table, FromTimestamp, ToTimestamp) ->
   lookup_by_date(Table, FromTimestamp, ToTimestamp, get_ts(), true).
 
 lookup_by_date(Table, FromTimestamp, ToTimestamp, TTL, Prolong) ->
-  io:format("LOOKUP ~p ~p ~p ~p~n", [FromTimestamp, ToTimestamp, TTL, Prolong]),
   Key = ets:first(Table),
   lookup_by_date(Table, FromTimestamp, ToTimestamp, Key, [], TTL, Prolong).
 
