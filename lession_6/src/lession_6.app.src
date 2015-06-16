@@ -7,6 +7,7 @@
 		kernel,
 		stdlib,
 		jsx,
+                dh_date,
 		cowboy
 	]},
 	{mod, {lession_6_app, []}},

@@ -10,7 +10,7 @@ start(_Type, _Args) ->
 			{"/api/cache_server", api_handler, []}
 		]}
 	]),
-	{ok, _} = cowboy:start_http(my_http_listener, 100, [{port, 8081}], [
+	{ok, _} = cowboy:start_http(my_http_listener, 100, [{port, 8080}], [
 		{env, [{dispatch, Dispatch}]}
 	]),
 	lession_6_sup:start_link().
