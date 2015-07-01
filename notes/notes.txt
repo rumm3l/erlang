@@ -1,0 +1,77 @@
+and
+or
+andalso
+orelse
+,
+
+
+atom > num
+, and
+; or
+
+[begin
+  Z = Y + 2,
+  Z * 3
+ end || {X, Y} <- L], in_integer(X), X > 3.
+
+<<"Na", X:16/integer, Rest/binary>> = Bin2.
+unit type integer
+unit size
+Rest:5/binary
+Rest:40/bits - выравнивание?
+
+<< <<X>> || X <- [1, 2, 3] >>
+[ X || <<X>> <= <<1, 2, 3>> ].
+
+
+yaws - wunderwaffe
+mochiweb - thin, simple, юзает хак. только хттп
+webmachine - над mochiweb
+musiltin - хак
+cowboy - французы, первые бинарники, 0.2, хорош архитектура.
+elli - проще mochiweb
+
+appear.in
+https://appear.in/erlang-academy
+
+cowboy - handler + middlewares, netty style accpetors + handler
+elli - moddlewares
+emysql - странные exceptions!!1, сложноватая архитекрута, не все типы, есть пул, относительно удобный апи
+
+менеджер пулов
+poolboy - старый, max_overflow - игнорит - забивает на опцию - 4000 коннектов, весят дешево(?). Нету группы пулов, нельзя менять динамечески, заклинивает коннерты - не может перезапустить если отвалился и на него идут коннекты.
+
+xmerl - на строках, no xslt
+exmerl - bin -> atom tags, encode/decode - апи говняное
+exomler - bin, simple
+exmpp - nif, C
+
+NIF - может валить виртуалку, считает редукции(вызовы ф-й), не знает редукции нифов, дестабилизирует, нужно < 1ms, проблеммы с простоем.
+BIF.
+HiPE - 2x native.
+
+jsonx - fastest, C, NIF with NIF troubles. Records to JSON. Может.
+jsx - массовый
+jsone - fastest erlang, япония, рекомендация
+
+BERT - erl bin, serialization, bin.
+ukraine erlang google trends.
+
+term_to_binary
+binary_to_term
+
+BERT - from github
+RoR front, erlang back - github, BERT
+
+observer:start().
+
+ubuntu - erlang broken.
+erlang solutions has observer:start(). =(
+lists:seq(1, 10000). - mem
+
+proc dict - slow - ets better
+
+OTP ssl session - memory leak. Cleaning only one per 24hours. session_life_time -> 10 min, < 100Mb. ETS
+
+erlang - megacompact, small codebase
+erlydtl - parse transform
