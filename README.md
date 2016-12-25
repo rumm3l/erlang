@@ -31,7 +31,7 @@ make tests
 ```
 
 ## Usage
-After you confgured cgate using `rel/sys.config`, build and start release:
+After configuring channels in `rel/sys.config`, build and start release:
 ```
 make run
 ```
