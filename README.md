@@ -10,7 +10,6 @@ cgate is a bridge between RabbitMQ and Kafka which forwards messages from specif
   - [Usage](#usage)
     - [Running from the shell](#running-from-the-shell)
     - [Running as a daemon](#running-as-a-daemon)
-  - [License](#license)
 
 ## Setup
 Configuration for the bridge is described in the `rel/sys.config` and in the `tests/test.spec`.There are several subsections for RMQ, Kafka and channels configuration.
@@ -84,7 +83,5 @@ make run
 3. Unzip release from `_rel/cgate_release/cgate_release-1.tar.gz` to `/opt/cgate`
 4. Use service file from `daemon/cgate` to run application as a daemon
 
-## License
-???
 
 
