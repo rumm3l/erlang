@@ -20,10 +20,14 @@ Configuration for the bridge is described in the `rel/sys.config` and in the `te
 {brod, [
   {clients, [
     {kafka_client_1, [
-      {endpoints, [{"kafka_host", kafka_port}]}, %% hostname or ip as a string, port as a number
-      {reconnect_cool_down_seconds, 10},         %% ???
-      {auto_start_producers, true},              %% ???
-      {default_producer_config, []}              %% ???
+      %% hostname or ip as a string, port as a number
+      {endpoints, [{"kafka_host", kafka_port}]}, 
+      %% ???
+      {reconnect_cool_down_seconds, 10},         
+      %% ???
+      {auto_start_producers, true},              
+      %% ???
+      {default_producer_config, []}             
     ]}
   ]}
 ]}
@@ -45,12 +49,16 @@ Channel is an actual bridge between RMQ exchange and Kafka topic. Application ma
               [#{connection => "amqp://user:password@rabbitmqhost/vhost",
                  exchange => <<"Exchange.To.Read.From">>,
                  routing_key => <<"*">>}]},
-     from_decoder => {converter_module_name, decoder_fun_name},      %% fun which converts raw data from rmq to erlang term
-     to_encoder => {converter_module_name, encoder_fun_name},        %% fun which converts erlang term to kafka payload
-     to => {kafka, publish,
-            [#{kafka_client => kafka_client_1,                       %% ???
+     %% fun which converts raw data from rmq to erlang term            
+     from_decoder => {converter_module_name, decoder_fun_name},   
+     %% fun which converts erlang term to kafka string payload   
+     to_encoder => {converter_module_name, encoder_fun_name},        
+     to => {kafka, publish, 
+             %% ???
+            [#{kafka_client => kafka_client_1,                       
                topics => [#{key => <<"routing_key_for_the_topic">>,
-                            partition => 0,                          %% ???
+                            %% ???
+                            partition => 0,                          
                             topic => <<"topic_to_write_to">>}]}]}
     }
   }
@@ -78,3 +86,5 @@ make run
 
 ## License
 ???
+
+
