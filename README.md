@@ -2,37 +2,69 @@
 cgate is a bridge between RabbitMQ and Kafka which forwards messages from specified RMQ exchanges to specific Kafka topics.
 
 ## Setup
-Configuration for the bridge is described in `rel/sys.config`, under channels subsection. Configure your channels by example:
+Configuration for the bridge is described in the `rel/sys.config` and in the `tests/test.spec`.There are several subsections for RMQ, Kafka and channels configuration.
+
+### Kafka
+```erlang
+{brod, [
+  {clients, [
+    {kafka_client_1, [
+      {endpoints, [{"kafka_host", kafka_port}]}, %% hostname or ip as a string, port as a number
+      {reconnect_cool_down_seconds, 10},         %% ???
+      {auto_start_producers, true},              %% ???
+      {default_producer_config, []}              %% ???
+    ]}
+  ]}
+]}
 ```
-...
+### RabbitMQ
+This sectioin appears only in test.spec for RMQ connection testing
+```erlang
+{rmq_config, 
+  {"amqp://user:password@rabbitmqhost/vhost", 
+  <<"Exchange.To.Read.From">>}
+}
+```
+### Channels
+Channel is an actual bridge between RMQ exchange and kafka topic. Application may run multiple channels to transfer data from RMQ to Kafka.
+```erlang
 {channels, [
-  {channel_login, 
+  {channel_name, 
    #{from => {rmq, subscribe,
               [#{connection => "amqp://user:password@rabbitmqhost/vhost",
-                 exchange => <<"Your.Exchange.To.Read.From">>,
+                 exchange => <<"Exchange.To.Read.From">>,
                  routing_key => <<"*">>}]},
-     from_decoder => {converter_module_name, deocder_fun_name},
-     to_encoder => {converter_module_name, encoder_fun_name},
+     from_decoder => {converter_module_name, decoder_fun_name},      %% fun which converts raw data from rmq to erlang term
+     to_encoder => {converter_module_name, encoder_fun_name},        %% fun which converts erlang term to kafka payload
      to => {kafka, publish,
-            [#{kafka_client => kafka_client_1,
-               topics => [#{key => <<"routing_key_for_topic">>,
-                            partition => 0,
+            [#{kafka_client => kafka_client_1,                       %% ???
+               topics => [#{key => <<"routing_key_for_the_topic">>,
+                            partition => 0,                          %% ???
                             topic => <<"topic_to_write_to">>}]}]}
     }
   }
  ]}
-...
 ```
 
 ## Tests
-In order to run all project tests run:
+In order to run all tests run:
 ```
 make tests
 ```
 
 ## Usage
+### Running from the shell
 After configuring channels in `rel/sys.config`, build and start release:
 ```
 make run
 ```
+
+### Running as a daemon
+1. Setup configuration in `rel/sys.config`
+2. Make release `make rel`
+3. Unzip release from `_rel/cgate_release/cgate_release-1.tar.gz` to `/opt/cgate`
+4. Use service file from `daemon/cgate` to run application as a daemon
+
+
+
 
