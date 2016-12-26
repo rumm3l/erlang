@@ -1,7 +1,7 @@
 # cgate
 cgate is a bridge between RabbitMQ and Kafka which forwards messages from specific RMQ exchange to specific Kafka topic.
 
-==================
+
   - [Setup](#setup)
     - [Kafka](#kafka)
     - [RabbitMQ](#rabbitmq)
