@@ -1,5 +1,16 @@
 # cgate
-cgate is a bridge between RabbitMQ and Kafka which forwards messages from specified RMQ exchanges to specific Kafka topics.
+cgate is a bridge between RabbitMQ and Kafka which forwards messages from specific RMQ exchange to specific Kafka topic.
+
+==================
+  - [Setup](#setup)
+    - [Kafka](#kafka)
+    - [RabbitMQ](#rabbitmq)
+    - [Channels](#channels)
+  - [Tests](#tests)
+  - [Usage](#usage)
+    - [Running from the shell](#running-from-the-shell)
+    - [Running as a daemon](#running-as-a-daemon)
+  - [License](#license)
 
 ## Setup
 Configuration for the bridge is described in the `rel/sys.config` and in the `tests/test.spec`.There are several subsections for RMQ, Kafka and channels configuration.
@@ -18,7 +29,7 @@ Configuration for the bridge is described in the `rel/sys.config` and in the `te
 ]}
 ```
 ### RabbitMQ
-This sectioin appears only in test.spec for RMQ connection testing
+This sectioin appears only in test.spec for RMQ connection testing.
 ```erlang
 {rmq_config, 
   {"amqp://user:password@rabbitmqhost/vhost", 
@@ -26,7 +37,7 @@ This sectioin appears only in test.spec for RMQ connection testing
 }
 ```
 ### Channels
-Channel is an actual bridge between RMQ exchange and kafka topic. Application may run multiple channels to transfer data from RMQ to Kafka.
+Channel is an actual bridge between RMQ exchange and Kafka topic. Application may run multiple channels to transfer data from RMQ to Kafka.
 ```erlang
 {channels, [
   {channel_name, 
@@ -65,6 +76,5 @@ make run
 3. Unzip release from `_rel/cgate_release/cgate_release-1.tar.gz` to `/opt/cgate`
 4. Use service file from `daemon/cgate` to run application as a daemon
 
-
-
-
+## License
+???
