@@ -21,18 +21,18 @@ Configuration for the bridge is described in the `rel/sys.config` and in the `te
     {kafka_client_1, [
       %% hostname or ip as a string, port as a number
       {endpoints, [{"kafka_host", kafka_port}]}, 
-      %% ???
+      %% socket error recovery timeout
       {reconnect_cool_down_seconds, 10},         
-      %% ???
+      %% this value must not be changed
       {auto_start_producers, true},              
-      %% ???
+      %% this value must not be changed
       {default_producer_config, []}             
     ]}
   ]}
 ]}
 ```
 ### RabbitMQ
-This sectioin appears only in test.spec for RMQ connection testing.
+This section appears only in test.spec for RMQ connection testing.
 ```erlang
 {rmq_config, 
   {"amqp://user:password@rabbitmqhost/vhost", 
@@ -53,10 +53,10 @@ Channel is an actual bridge between RMQ exchange and Kafka topic. Application ma
      %% fun which converts erlang term to kafka string payload   
      to_encoder => {converter_module_name, encoder_fun_name},        
      to => {kafka, publish, 
-             %% ???
+             %% brod kafka client name(kafka_client_1), for higher performance it should be unique client for each subscriber
             [#{kafka_client => kafka_client_1,                       
                topics => [#{key => <<"routing_key_for_the_topic">>,
-                            %% ???
+                            %% partition id to which write payload from RMQ
                             partition => 0,                          
                             topic => <<"topic_to_write_to">>}]}]}
     }
@@ -85,3 +85,4 @@ make run
 
 
 
+  
